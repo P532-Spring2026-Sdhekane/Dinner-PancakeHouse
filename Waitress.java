@@ -1,103 +1,63 @@
-// Iterator Pattern - Step 3: Waitress uses MenuIterator for BOTH menus
-// Key benefit: printMenu(iterator) works the same whether the
-// backing store is an Array (Diner) or ArrayList (Pancake House).
-// The Waitress never needs to know which one it is.
+// Composite Pattern - Waitress
+// The Waitress only knows about MenuComponent.
+// It does not care if it's a leaf (MenuItem) or composite (Menu) -
+// it just calls print() and the tree handles the rest.
 public class Waitress {
-    PancakeHouseMenu pancakeMenu;
-    DinerMenu        dinerMenu;
 
-    public Waitress(PancakeHouseMenu pancakeMenu, DinerMenu dinerMenu) {
-        this.pancakeMenu = pancakeMenu;
-        this.dinerMenu   = dinerMenu;
+    private final MenuComponent allMenus;
+
+    public Waitress(MenuComponent allMenus) {
+        this.allMenus = allMenus;
     }
 
-    // Prints both menus using the Iterator pattern
+    // Composite Pattern: one call prints the entire tree recursively
     public void printMenu() {
-        MenuIterator pancakeIterator = pancakeMenu.createIterator();
-        MenuIterator dinerIterator   = dinerMenu.createIterator();
-
-        System.out.println("\n============================================");
-        System.out.println("  TASK 3 - Iterator Pattern: Both Menus");
-        System.out.println("============================================");
-
-        System.out.println("\n+------------------------------------------+");
-        System.out.println("|     OBJECTVILLE PANCAKE HOUSE MENU       |");
-        System.out.println("+------------------------------------------+");
-        printMenu(pancakeIterator);
-
-        System.out.println("\n+------------------------------------------+");
-        System.out.println("|       OBJECTVILLE DINER MENU             |");
-        System.out.println("+------------------------------------------+");
-        printMenu(dinerIterator);
+        allMenus.print();
     }
 
-    // Prints combined menu - both menus back-to-back via iterators
-    public void printCombinedMenu() {
-        System.out.println("\n============================================");
-        System.out.println("  TASK 3 - Combined via Iterator Pattern");
-        System.out.println("============================================");
-        System.out.println("\n+------------------------------------------+");
-        System.out.println("|        FULL OBJECTVILLE MENU             |");
-        System.out.println("|   (Pancake House  +  Diner combined)     |");
-        System.out.println("+------------------------------------------+");
-
-        // Same helper method handles both - this is the whole point of the pattern
-        printMenu(pancakeMenu.createIterator());
-        printMenu(dinerMenu.createIterator());
-    }
-
-    // Prints only vegetarian items from both menus
+    // Walk the tree and print only vegetarian leaves
     public void printVegetarianMenu() {
         System.out.println("\n============================================");
-        System.out.println("  TASK 3 - Vegetarian Items Only");
+        System.out.println("  VEGETARIAN ITEMS ONLY");
         System.out.println("============================================");
-
-        System.out.println("\n--- Pancake House (vegetarian) ---");
-        printVegetarian(pancakeMenu.createIterator());
-
-        System.out.println("\n--- Diner (vegetarian) ---");
-        printVegetarian(dinerMenu.createIterator());
+        printVegetarian(allMenus);
     }
 
-    // ── private helpers ───────────────────────────────────────────────────────
-
-    // One method handles ANY MenuIterator - Array or ArrayList, doesn't matter
-    private void printMenu(MenuIterator iterator) {
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
-        }
-    }
-
-    private void printVegetarian(MenuIterator iterator) {
-        while (iterator.hasNext()) {
-            MenuItem item = iterator.next();
-            if (item.isVegetarian()) {
-                System.out.println(item);
+    private void printVegetarian(MenuComponent component) {
+        try {
+            // If it's a leaf (MenuItem), check vegetarian flag
+            if (component.isVegetarian()) {
+                component.print();
+            }
+        } catch (UnsupportedOperationException e) {
+            // It's a composite (Menu) - print its header and recurse
+            System.out.println("\n--- " + component.getName() + " ---");
+            for (MenuComponent child : ((Menu) component).getChildren()) {
+                printVegetarian(child);
             }
         }
     }
 
-    // Prints today's alternating diner menu (auto-detects day)
-    public void printAlternatingDinerMenu() {
-        System.out.println("\n============================================");
-        System.out.println("  ALTERNATING DINER MENU");
-        System.out.println("  Today: " + AlternatingDinerMenuIterator.todayLabel());
-        System.out.println("============================================");
-        printMenu(new AlternatingDinerMenuIterator(dinerMenu.getMenuItems()));
+    // Alternating diner menu - still uses the iterator on the diner's children
+    public void printAlternatingDinerMenu(MenuComponent dinerMenu, boolean evenDays) {
+        String label = evenDays ? "Mon / Wed / Fri / Sun" : "Tue / Thu / Sat";
+        System.out.println("\n--- Diner: " + label + " ---");
+
+        // Build a temporary array from the diner menu children for the iterator
+        java.util.ArrayList<MenuComponent> kids = ((Menu) dinerMenu).getChildren();
+        MenuItem[] items = new MenuItem[kids.size()];
+        for (int i = 0; i < kids.size(); i++) items[i] = (MenuItem) kids.get(i);
+
+        AlternatingDinerMenuIterator it = new AlternatingDinerMenuIterator(items, evenDays);
+        while (it.hasNext()) it.next().print();
     }
 
-    // Shows both schedules so you can see how the array splits
-    public void printBothAlternatingSchedules() {
+    public void printBothAlternatingSchedules(MenuComponent dinerMenu) {
         System.out.println("\n============================================");
         System.out.println("  ALTERNATING DINER MENU - Both Schedules");
         System.out.println("============================================");
-
-        System.out.println("\n--- Mon / Wed / Fri / Sun ---");
-        printMenu(new AlternatingDinerMenuIterator(dinerMenu.getMenuItems(), true));
-
-        System.out.println("\n--- Tue / Thu / Sat ---");
-        printMenu(new AlternatingDinerMenuIterator(dinerMenu.getMenuItems(), false));
-
-        System.out.println("\n>> Today showing: " + AlternatingDinerMenuIterator.todayLabel());
+        printAlternatingDinerMenu(dinerMenu, true);
+        printAlternatingDinerMenu(dinerMenu, false);
+        System.out.println("\n>> Today: " + AlternatingDinerMenuIterator.todayLabel());
     }
 }
