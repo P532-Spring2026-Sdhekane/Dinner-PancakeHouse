@@ -7,6 +7,9 @@ public class Main {
         PancakeHouseMenu pancakeMenu = new PancakeHouseMenu();
         DinerMenu        dinerMenu   = new DinerMenu();
 
+        // ─────────────────────────────────────────
+        // TASK 1: Print each menu separately (no pattern)
+        // ─────────────────────────────────────────
         System.out.println("\n============================================");
         System.out.println("  TASK 1 - Two Menus Printed Individually");
         System.out.println("============================================");
@@ -14,6 +17,9 @@ public class Main {
         pancakeMenu.printMenu();
         dinerMenu.printMenu();
 
+        // ─────────────────────────────────────────
+        // TASK 2: Combine both menus (no pattern)
+        // ─────────────────────────────────────────
         System.out.println("\n\n============================================");
         System.out.println("  TASK 2 - Combined Menu (No Pattern)");
         System.out.println("============================================");
@@ -36,11 +42,16 @@ public class Main {
             System.out.println(combined.get(i));
         }
         System.out.println("\nTotal items: " + combined.size());
+
+        // ─────────────────────────────────────────
+        // TASK 3: Iterator Pattern
+        // ─────────────────────────────────────────
         Waitress waitress = new Waitress(pancakeMenu, dinerMenu);
 
-        waitress.printMenu();           
-        waitress.printCombinedMenu();   
-        waitress.printVegetarianMenu(); 
+        waitress.printMenu();           // separate menus via iterator
+        waitress.printCombinedMenu();   // combined via iterator
+        waitress.printVegetarianMenu(); // vegetarian filter via iterator
+        waitress.printBothAlternatingSchedules(); // alternating diner menu
     }
 }
 
