@@ -38,6 +38,11 @@ public class DinerMenu {
     public MenuItem[] getMenuItems() { return menuItems; }
     public int getNumberOfItems()    { return numberOfItems; }
 
+    // Iterator Pattern - each menu creates its own iterator
+    public MenuIterator createIterator() {
+        return new DinerMenuIterator(menuItems);
+    }
+
     // Task 1 - print directly, no Iterator pattern
     public void printMenu() {
         System.out.println("\n+------------------------------------------+");

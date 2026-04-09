@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-// Task 1 – Objectville Pancake House Menu uses an ArrayList (no design pattern)
 public class PancakeHouseMenu {
     ArrayList<MenuItem> menuItems;
 
@@ -26,7 +25,12 @@ public class PancakeHouseMenu {
 
     public ArrayList<MenuItem> getMenuItems() { return menuItems; }
 
-    // Task 1 - print directly, no Iterator pattern
+    // Iterator Pattern - each menu creates its own iterator
+    public MenuIterator createIterator() {
+        return new PancakeHouseMenuIterator(menuItems);
+    }
+
+
     public void printMenu() {
         System.out.println("\n+------------------------------------------+");
         System.out.println("|     OBJECTVILLE PANCAKE HOUSE MENU       |");
