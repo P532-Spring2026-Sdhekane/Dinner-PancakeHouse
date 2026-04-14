@@ -6,11 +6,14 @@ public class Main {
         MenuComponent pancakeMenu = new Menu("PANCAKE HOUSE MENU", "Breakfast");
         MenuComponent dinerMenu   = new Menu("DINER MENU",         "Lunch");
         MenuComponent allMenus    = new Menu("ALL MENUS",          "All menus combined");
+        MenuComponent dessertMenu  = new Menu("DESSERT MENU",       "Dessert of course!");
 
         allMenus.add(pancakeMenu);
         allMenus.add(dinerMenu);
+        allMenus.add(new Menu("CAFE MENU", "Dinner"));
 
-        // Pancake House items (leaves)
+
+        // Pancake House items 
         pancakeMenu.add(new MenuItem("K&B's Pancake Breakfast",
                 "Pancakes with scrambled eggs, and toast", true, 2.99));
         pancakeMenu.add(new MenuItem("Regular Pancake Breakfast",
@@ -20,7 +23,7 @@ public class Main {
         pancakeMenu.add(new MenuItem("Waffles",
                 "Waffles, with your choice of blueberries or strawberries", true, 3.59));
 
-        // Diner items (leaves)
+        // Diner items 
         dinerMenu.add(new MenuItem("Vegetarian BLT",
                 "(Fakin') Bacon with lettuce & tomato on whole wheat", true, 2.99));
         dinerMenu.add(new MenuItem("BLT",
@@ -33,15 +36,19 @@ public class Main {
                 "A medley of steamed vegetables with rice", true, 3.99));
         dinerMenu.add(new MenuItem("Pasta",
                 "Spaghetti with marinara sauce, and a slice of sourdough bread", true, 3.89));
+        dessertMenu.add(new MenuItem("Apple Pie",
+                "Apple pie with a flaky crust, topped with vanilla ice cream", true, 1.59));
+        dessertMenu.add(new MenuItem("Cheesecake",
+                "Creamy cheesecake with a graham cracker crust", true, 1.99));
 
-        // ── Waitress uses composite tree ──────────────────────────────────────
+        dinerMenu.add(dessertMenu);
+
         Waitress waitress = new Waitress(allMenus);
 
         System.out.println("\n============================================");
         System.out.println("  COMPOSITE PATTERN - Full Menu Tree");
         System.out.println("============================================");
         waitress.printMenu();
-
         waitress.printVegetarianMenu();
 
         waitress.printBothAlternatingSchedules(dinerMenu);

@@ -23,8 +23,8 @@ public class Menu extends MenuComponent {
     @Override
     public void print() {
         System.out.println("\n+------------------------------------------+");
-        System.out.printf ("|  %-40s|%n", getName());
-        System.out.printf ("|  %-40s|%n", getDescription());
+        System.out.print("\n" + getName());
+        System.out.println(", " + getDescription());
         System.out.println("+------------------------------------------+");
         for (MenuComponent c : children) {
             c.print();

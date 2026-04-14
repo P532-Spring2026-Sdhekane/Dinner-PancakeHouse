@@ -1,5 +1,3 @@
-// Composite Pattern - Leaf node
-// MenuItem is a leaf: it has no children and implements all data methods.
 public class MenuItem extends MenuComponent {
 
     private final String  name;
