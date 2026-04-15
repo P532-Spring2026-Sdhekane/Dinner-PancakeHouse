@@ -50,7 +50,7 @@ public class Main {
         System.out.println("============================================");
         waitress.printMenu();
         waitress.printVegetarianMenu();
-
+waitress.printVegetarianMenu2();
         waitress.printBothAlternatingSchedules(dinerMenu);
     }
 }

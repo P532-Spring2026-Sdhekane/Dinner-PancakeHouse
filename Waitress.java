@@ -11,7 +11,6 @@ public class Waitress {
     }
 
     public void printVegetarianMenu() {
-        
     System.out.println("\n============================================");
     System.out.println("  VEGETARIAN ITEMS ONLY");
     System.out.println("============================================");
@@ -29,6 +28,21 @@ private void printVegetarian(MenuComponent component) {
         }
     }
 }
+public void printVegetarianMenu2() {
+    System.out.println("\n============================================");
+    System.out.println("  VEGETARIAN ITEMS ONLY (Composite Iterator)");
+    System.out.println("============================================");
+
+    CompositeIterator iterator = new CompositeIterator(
+            ((Menu) allMenus).getChildren().iterator());
+
+    while (iterator.hasNext()) {
+        MenuComponent component = iterator.next();
+        if (component instanceof MenuItem && component.isVegetarian()) {
+            component.print();
+        }
+    }
+}       
 
     public void printAlternatingDinerMenu(MenuComponent dinerMenu, boolean evenDays) {
     String label = evenDays ? "Mon / Wed / Fri / Sun" : "Tue / Thu / Sat";
