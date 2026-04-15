@@ -11,24 +11,24 @@ public class Waitress {
     }
 
     public void printVegetarianMenu() {
-        System.out.println("\n============================================");
-        System.out.println("  VEGETARIAN ITEMS ONLY");
-        System.out.println("============================================");
-        printVegetarian(allMenus);
-    }
+        
+    System.out.println("\n============================================");
+    System.out.println("  VEGETARIAN ITEMS ONLY");
+    System.out.println("============================================");
+    printVegetarian(allMenus);
+}
 
-    private void printVegetarian(MenuComponent component) {
-        try {
-            if (component.isVegetarian()) {
-                component.print();
-            }
-        } catch (UnsupportedOperationException e) {
-            System.out.println("\n--- " + component.getName() + " ---");
-            for (MenuComponent child : ((Menu) component).getChildren()) {
-                printVegetarian(child);
-            }
+private void printVegetarian(MenuComponent component) {
+    if (component instanceof MenuItem) {
+        if (component.isVegetarian()) {
+            component.print();
+        }
+    } else {
+        for (MenuComponent child : ((Menu) component).getChildren()) {
+            printVegetarian(child);
         }
     }
+}
 
     public void printAlternatingDinerMenu(MenuComponent dinerMenu, boolean evenDays) {
     String label = evenDays ? "Mon / Wed / Fri / Sun" : "Tue / Thu / Sat";
